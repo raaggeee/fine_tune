@@ -1,0 +1,7 @@
+{
+  "disable_ai": true,
+  "show_edit_predictions": false,
+  "completions": {
+    "words_min_length": 0
+  }
+}
