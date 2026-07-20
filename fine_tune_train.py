@@ -6,16 +6,6 @@ from transformers import TrainingArguments, TextStreamerfrom
 import FastLanguageModel, is_bfloat16_supported
 
 
-def format_samples(example):
-    example["prompt"] = alpaca_template.format(example["prompt"])
-    example["chosen"] = example["chosen"] + EOS_TOKEN
-    example["rejected"] = example["rejected"] + EOS_TOKEN
-    return {
-        "prompt": example["prompt"],
-        "chosen": example["chosen"],
-        "rejected": example["rejected"]
-    }
-
 max_seq_length = 2048
 model_name = ""
 model, tokenizer = FastLanguageModel.from_pretrained(
@@ -51,13 +41,11 @@ EOS_TOKEN = tokenizer.eos_token
 
 #might have to modify this
 def format_samples(example):
-    example["prompt"] = alpaca_template.format(example["prompt"])
-    example["chosen"] = example["chosen"] + EOS_TOKEN
-    example["rejected"] = example["rejected"] + EOS_TOKEN
+    example["prompt"] = alpaca_template.format(example["instruction"], "")
+    example["output"] = example["output"] + EOS_TOKEN
     return {
         "prompt": example["prompt"],
-        "chosen": example["chosen"],
-        "rejected": example["rejected"]
+        "output": example["output"]
     }
 
 dataset = dataset.map(format_samples, batched=True, remove_columns=dataset.column_name)
