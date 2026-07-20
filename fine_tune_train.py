@@ -37,6 +37,7 @@ Given a user question you have to answer the user with your best knowledge.
 
 EOS_TOKEN = tokenizer.eos_token
 
+#this is a preprocessing step. it will normalize the data into chat template (in our case gemma)
 def format_samples(sample):
     return {
         "messages": [
@@ -81,13 +82,3 @@ trainer = SFTTrainer(
 )
 
 trainer.train(resume_from_checkpoint=True)
-
-
-## Test the model
-FastLanguageModel.from_inference(model)
-message = alpaca_template.format("What is QLora?", "")
-
-input = tokenizer([message], return_tensor="pt").to("cuda")
-
-text_streamer = TextStreamer(tokenizer)
-_ = model.generate(**input, streamer=text_streamer, max_new_tokens=256, use_cache=True)
