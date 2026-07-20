@@ -1,9 +1,11 @@
 import os
+
+os.chdir("..")
+os.environ["HF_HOME"] = os.path.abspath("huggingface_cache")
 import torch
 from trl import SFTTrainer
-from datasets import load_dataset, concatenate_datasets
+from datasets import load_dataset
 from transformers import TrainingArguments, TextStreamerfrom
-import FastLanguageModel, is_bfloat16_supported
 
 
 def format_samples(example):
