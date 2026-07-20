@@ -7,7 +7,7 @@ import FastLanguageModel, is_bfloat16_supported
 
 
 max_seq_length = 2048
-model_name = ""
+model_name = "google/gemma-4-E2B"
 model, tokenizer = FastLanguageModel.from_pretrained(
     model=model_name,
     max_seq_length=max_seq_length,
@@ -26,27 +26,26 @@ model = FastLanguageModel.get_peft_model(
 #we can also load our custom instruct dataset
 dataset = load_dataset("mlabonne/FineTome-Alpaca-100k", split="train[:10000]")
 
-alpaca_template = """
-Below is an instruction that describes a task. Write a response that appropriately completes the
-request.
+system_prompt = "You are a general question answerer to the user."
+user_prompt = """
+Given a user question you have to answer the user with your best knowledge.
 
-### Instruction:
-{}
-
-### Response:
-{}
+<USER_QUERY>
+{question}
+</USER_QUERY>
 """
 
 EOS_TOKEN = tokenizer.eos_token
 
-#might have to modify this
-def format_samples(example):
-    example["prompt"] = alpaca_template.format(example["instruction"], "")
-    example["output"] = example["output"] + EOS_TOKEN
+def format_samples(sample):
     return {
-        "prompt": example["prompt"],
-        "output": example["output"]
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt.format(question=sample["instruction"])},
+            {"role": "assistant", "content": sample["output"]}
+        ]
     }
+
 
 dataset = dataset.map(format_samples, batched=True, remove_columns=dataset.column_name)
 
