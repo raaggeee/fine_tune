@@ -1,8 +1,11 @@
 import os
-import torch
+
+os.chdir("..")
+os.environ["HF_HOME"] = os.path.abspath("huggingface_cache")
+
 from trl import SFTTrainer
-from datasets import load_dataset, concatenate_datasets
-from transformers import TrainingArguments, TextStreamerfrom
+from datasets import load_dataset
+from transformers import TrainingArguments
 import FastLanguageModel, is_bfloat16_supported
 
 
