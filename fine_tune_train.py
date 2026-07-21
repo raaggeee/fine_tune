@@ -51,7 +51,7 @@ def format_samples(sample):
     }
 
 
-dataset = dataset.map(format_samples, batched=True, remove_columns=dataset.column_name)
+dataset = dataset.map(format_samples, batched=True, remove_columns=dataset.column_names)
 
 dataset = dataset.train_test_split(test_size=0.5)
 
