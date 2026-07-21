@@ -12,7 +12,7 @@ from unsloth import FastLanguageModel, is_bfloat16_supported
 max_seq_length = 2048
 model_name = "google/gemma-4-E2B"
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model=model_name,
+    model_name=model_name,
     max_seq_length=max_seq_length,
     load_in_4bit=False
 )
