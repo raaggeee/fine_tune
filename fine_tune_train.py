@@ -22,8 +22,7 @@ model = FastLanguageModel.get_peft_model(
     r=32,
     lora_alpha=32,
     lora_dropout=0,
-    target_modules=["q_proj", "k_proj", "v_proj", "up_proj",
-        "down_proj", "o_proj", "gate_proj"]
+    target_modules=["q_proj"]
 )
 
 #we can also load our custom instruct dataset
