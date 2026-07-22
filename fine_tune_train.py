@@ -71,7 +71,7 @@ sft_config = SFTConfig(
     save_strategy="steps",
     save_steps=100,
     max_length=max_seq_length,
-    dataset_num_proc=2,
+    # dataset_num_proc=2,
     packing=False
 )
 
