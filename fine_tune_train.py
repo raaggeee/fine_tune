@@ -70,7 +70,9 @@ sft_config = SFTConfig(
     seed=0,
     save_strategy="steps",
     save_steps=100,
-    max_length=max_seq_length
+    max_length=max_seq_length,
+    dataset_num_proc=2,
+    packing=True
 )
 
 trainer = SFTTrainer(
@@ -78,8 +80,6 @@ trainer = SFTTrainer(
     processing_class=tokenizer,
     train_dataset = dataset["train"],
     eval_dataset = dataset["test"],
-    dataset_num_proc=2,
-    packing=True,
     args=sft_config
 )
 
