@@ -3,7 +3,7 @@ import os
 os.chdir("..")
 os.environ["HF_HOME"] = os.path.abspath("huggingface_cache")
 
-from trl import SFTTrainer
+from trl import SFTTrainer, SFTConfig
 from datasets import load_dataset
 from transformers import TrainingArguments
 from unsloth import FastLanguageModel, is_bfloat16_supported
@@ -54,13 +54,17 @@ dataset = dataset.map(format_samples, remove_columns=dataset.column_names)
 
 dataset = dataset.train_test_split(test_size=0.5)
 
+sft_config = SFTConfig(
+    max_length=max_seq_length
+)
+
 
 trainer = SFTTrainer(
     model=model,
     processing_class=tokenizer,
     train_dataset = dataset["train"],
     eval_dataset = dataset["test"],
-    max_length=max_seq_length,
+    config=sft_config,
     dataset_num_proc=2,
     packing=True,
     args=TrainingArguments(
