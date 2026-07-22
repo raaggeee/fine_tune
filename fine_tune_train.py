@@ -2,11 +2,10 @@ import os
 
 os.chdir("..")
 os.environ["HF_HOME"] = os.path.abspath("huggingface_cache")
-
+from unsloth import FastLanguageModel, is_bfloat16_supported
 from trl import SFTTrainer, SFTConfig
 from datasets import load_dataset
 from transformers import TrainingArguments
-from unsloth import FastLanguageModel, is_bfloat16_supported
 
 
 max_seq_length = 2048
@@ -72,7 +71,8 @@ sft_config = SFTConfig(
     save_steps=100,
     max_length=max_seq_length,
     dataset_num_proc=1,
-    packing=False
+    packing=False,
+    dataloader_num_workers=0
 )
 
 trainer = SFTTrainer(
