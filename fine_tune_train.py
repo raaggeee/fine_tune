@@ -54,17 +54,12 @@ dataset = dataset.map(format_samples, remove_columns=dataset.column_names)
 
 dataset = dataset.train_test_split(test_size=0.5)
 
-sft_config = SFTConfig(
-    max_length=max_seq_length
-)
-
 
 trainer = SFTTrainer(
     model=model,
     processing_class=tokenizer,
     train_dataset = dataset["train"],
     eval_dataset = dataset["test"],
-    config=sft_config,
     dataset_num_proc=2,
     packing=True,
     args=TrainingArguments(
@@ -83,6 +78,7 @@ trainer = SFTTrainer(
         seed=0,
         save_strategy="steps",
         save_steps=100,
+        max_length=max_seq_length
 
     )
 )
