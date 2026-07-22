@@ -6,6 +6,7 @@ from unsloth import FastLanguageModel, is_bfloat16_supported
 from trl import SFTTrainer, SFTConfig
 from datasets import load_dataset
 from transformers import TrainingArguments
+from unsloth.chat_templates import get_chat_template
 
 
 max_seq_length = 2048
@@ -39,14 +40,19 @@ Given a user question you have to answer the user with your best knowledge.
 EOS_TOKEN = tokenizer.eos_token
 
 #this is a preprocessing step. it will normalize the data into chat template (in our case gemma)
+tokenizer = get_chat_template(
+    tokenizer,
+    chat_template="gemma-2"
+)
 def format_samples(sample):
-    return {
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt.format(question=sample["instruction"])},
-            {"role": "assistant", "content": sample["output"]}
-        ]
-    }
+    messages =  [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt.format(question=sample["instruction"])},
+        {"role": "assistant", "content": sample["output"]}
+    ]
+
+    text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False)
+    return {"text": text}
 
 
 dataset = dataset.map(format_samples, remove_columns=dataset.column_names)
@@ -72,7 +78,8 @@ sft_config = SFTConfig(
     max_length=max_seq_length,
     dataset_num_proc=1,
     packing=False,
-    dataloader_num_workers=0
+    dataloader_num_workers=0,
+    dataset_text_field="text"
 )
 
 trainer = SFTTrainer(
