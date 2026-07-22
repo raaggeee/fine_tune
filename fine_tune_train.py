@@ -54,6 +54,24 @@ dataset = dataset.map(format_samples, remove_columns=dataset.column_names)
 
 dataset = dataset.train_test_split(test_size=0.5)
 
+sft_config = SFTConfig(
+    learning_rate=3e-4,
+    lr_scheduler_type="linear",
+    per_device_train_batch_size=2,
+    gradient_accumulation_steps=8,
+    num_train_epochs=3,
+    fp16=not is_bfloat16_supported(),
+    bf16=is_bfloat16_supported(),
+    logging_steps=1,
+    optim="adamw_8bit",
+    weight_decay=0.01,
+    warmup_steps=10,
+    output_dir="output",
+    seed=0,
+    save_strategy="steps",
+    save_steps=100,
+    max_length=max_seq_length
+)
 
 trainer = SFTTrainer(
     model=model,
@@ -62,25 +80,7 @@ trainer = SFTTrainer(
     eval_dataset = dataset["test"],
     dataset_num_proc=2,
     packing=True,
-    args=TrainingArguments(
-        learning_rate=3e-4,
-        lr_scheduler_type="linear",
-        per_device_train_batch_size=2,
-        gradient_accumulation_steps=8,
-        num_train_epochs=3,
-        fp16=not is_bfloat16_supported(),
-        bf16=is_bfloat16_supported(),
-        logging_steps=1,
-        optim="adamw_8bit",
-        weight_decay=0.01,
-        warmup_steps=10,
-        output_dir="output",
-        seed=0,
-        save_strategy="steps",
-        save_steps=100,
-        max_length=max_seq_length
-
-    )
+    args=sft_config
 )
 
 trainer.train(resume_from_checkpoint=True)
