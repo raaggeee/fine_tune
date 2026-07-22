@@ -22,7 +22,7 @@ model = FastLanguageModel.get_peft_model(
     r=32,
     lora_alpha=32,
     lora_dropout=0,
-    target_modules=["q_proj"]
+    target_modules=["q_proj", "v_proj"]
 )
 
 #we can also load our custom instruct dataset
@@ -50,16 +50,16 @@ def format_samples(sample):
     }
 
 
-dataset = dataset.map(format_samples, batched=True, remove_columns=dataset.column_names)
+dataset = dataset.map(format_samples, remove_columns=dataset.column_names)
 
 dataset = dataset.train_test_split(test_size=0.5)
 
+
 trainer = SFTTrainer(
     model=model,
-    tokenizer=tokenizer,
+    processing_class=tokenizer,
     train_dataset = dataset["train"],
     eval_dataset = dataset["test"],
-    dataset_text_field = "text",
     max_seq_length=max_seq_length,
     dataset_num_proc=2,
     packing=True,
