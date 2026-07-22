@@ -72,7 +72,7 @@ sft_config = SFTConfig(
     save_steps=100,
     max_length=max_seq_length,
     dataset_num_proc=2,
-    packing=True
+    packing=False
 )
 
 trainer = SFTTrainer(
