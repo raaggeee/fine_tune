@@ -42,7 +42,7 @@ EOS_TOKEN = tokenizer.eos_token
 #this is a preprocessing step. it will normalize the data into chat template (in our case gemma)
 tokenizer = get_chat_template(
     tokenizer,
-    chat_template="gemma-2"
+    chat_template="gemma-4"
 )
 def format_samples(sample):
     messages =  [
