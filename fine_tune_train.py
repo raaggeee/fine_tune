@@ -22,7 +22,7 @@ model = FastLanguageModel.get_peft_model(
     r=32,
     lora_alpha=32,
     lora_dropout=0,
-    target_modules=["q_proj", "v_proj"]
+    target_modules=["q_proj"]
 )
 
 #we can also load our custom instruct dataset
@@ -90,4 +90,4 @@ trainer = SFTTrainer(
     args=sft_config
 )
 
-trainer.train(resume_from_checkpoint=True)
+trainer.train() #removed checkpoints
