@@ -83,7 +83,7 @@ def format_samples(sample):
                 "arguments": sample["tool_input"]
             }
         }]},
-        {"role": "tool", "name": sample["tool_name"], "content": sample["tool_result"]}
+        {"role": "tool", "name": sample["tool_name"], "content": sample["tool_result"]},
         {"role": "assistant", "content": sample["output"]}
     ]
 
