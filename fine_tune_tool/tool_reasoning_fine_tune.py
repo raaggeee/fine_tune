@@ -26,7 +26,7 @@ model = FastLanguageModel.get_peft_model(
 )
 
 #we can also load our custom instruct dataset
-dataset = load_dataset("json", data_files="final_data.json")
+dataset = load_dataset("json", data_files="fine_tune_tool/final_data.json")
 
 system_prompt = """
 You are a helpful assistant with access to a set of tools for making HTTP requests and testing APIs. You can use these tools to help users test endpoints, debug requests, retrieve data, and validate HTTP behavior.
