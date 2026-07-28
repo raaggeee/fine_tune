@@ -74,7 +74,7 @@ tokenizer = get_chat_template(
 def format_samples(sample):
     messages =  [
         {"role": "system", "content": system_prompt.format(TOOL_DESCRIPTIONS=sample["tool_desc"])},
-        {"role": "user", "content": user_prompt.format(question=sample["instruction"])},
+        {"role": "user", "content": user_prompt.format(question=sample["input"])},
         {"role": "assistant", "content": sample["tool_reasoning"]},
         {"role": "assistant", "tool_calls": [{
             "type": "function",
