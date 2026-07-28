@@ -91,7 +91,7 @@ def format_samples(sample):
     return {"text": text}
 
 
-dataset = dataset.map(format_samples, remove_columns=dataset.column_names)
+dataset = dataset.map(format_samples)
 
 dataset = dataset.train_test_split(test_size=0.5)
 
