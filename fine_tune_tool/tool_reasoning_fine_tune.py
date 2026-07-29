@@ -73,18 +73,37 @@ tokenizer = get_chat_template(
 )
 def format_samples(sample):
     messages =  [
-        {"role": "system", "content": system_prompt.format(TOOL_DESCRIPTIONS=sample["tool_desc"])},
-        {"role": "user", "content": user_prompt.format(question=sample["input"])},
-        {"role": "assistant", "content": sample["tool_reasoning"]},
-        {"role": "assistant", "tool_calls": [{
-            "type": "function",
-            "function": {
-                "name": sample["tool_name"],
-                "arguments": sample["tool_input"]
-            }
-        }]},
-        {"role": "tool", "name": sample["tool_name"], "content": sample["tool_result"]},
-        {"role": "assistant", "content": sample["output"]}
+        {
+            "role": "system",
+            "content": system_prompt.format(TOOL_DESCRIPTIONS=sample["tool_desc"])
+        },
+
+        {
+            "role": "user",
+            "content": user_prompt.format(question=sample["input"])
+        },
+
+        {
+            "role": "assistant",
+            "tool_calls": [
+                {
+                    "type": "function",
+                    "function": {
+                        "name": sample["tool_name"],
+                        "arguments": sample["tool_input"]
+                    }
+                }
+            ],
+            "tool_response": [
+                {
+                    "name": sample["tool_name"],
+                    "response": {
+                        "result": sample["tool_result"]
+                    }
+                }
+            ],
+            "content": sample["output"]
+        }
     ]
 
     text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=False)
