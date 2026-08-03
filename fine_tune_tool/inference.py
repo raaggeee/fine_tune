@@ -13,7 +13,14 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 FastLanguageModel.for_inference(model)
 
-inputs = tokenizer(text="What can you do?!", return_tensors="pt").to("cuda")
+messages = [
+    {"role": "system", "content": "You are a very helpful assistant."},
+    {"role": "user", "content": "Hey!"}
+]
+
+prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+
+inputs = tokenizer(text=prompt, return_tensors="pt").to("cuda")
 
 text_streamer = TextStreamer(tokenizer)
 
