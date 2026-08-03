@@ -38,4 +38,4 @@ inputs = tokenizer(text=prompt, return_tensors="pt").to("cuda")
 
 text_streamer = TextStreamer(tokenizer)
 
-_ = model.generate(**inputs, streamer=text_streamer, max_new_tokens=100)
+_ = model.generate(**inputs, streamer=text_streamer, max_new_tokens=500)
