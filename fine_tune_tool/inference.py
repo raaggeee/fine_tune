@@ -13,7 +13,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 FastLanguageModel.for_inference(model)
 
-inputs = tokenizer(text="Hey!", return_tensors="pt").to("cuda")
+inputs = tokenizer(text="What can you do?!", return_tensors="pt").to("cuda")
 
 text_streamer = TextStreamer(tokenizer)
 
