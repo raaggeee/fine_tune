@@ -20,6 +20,11 @@ messages = [
 
 prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
+tokenizer = get_chat_template(
+    tokenizer,
+    chat_template="gemma-4"
+)
+
 inputs = tokenizer(text=prompt, return_tensors="pt").to("cuda")
 
 text_streamer = TextStreamer(tokenizer)
