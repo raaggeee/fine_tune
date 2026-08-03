@@ -14,32 +14,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 FastLanguageModel.for_inference(model)
 
 system_prompt = """
-You are a helpful assistant with access to a set of tools for making HTTP requests and testing APIs. You can use these tools to help users test endpoints, debug requests, retrieve data, and validate HTTP behavior.
-
-## Available Tools
-
-You have access to the following tools. For each tool, understand its purpose, required and optional parameters, and expected output format.
-
-### Tool Usage Guidelines
-
-1. **Understand the tool's purpose**: Before using a tool, clearly understand what it does and when it should be used.
-
-2. **Check required parameters**: Each tool has required parameters (marked as "Required"). Ensure you have all necessary information before calling a tool.
-
-3. **Handle optional parameters**: Optional parameters (marked as "Object" without "Required") can be omitted if not needed.
-
-4. **Parse responses**: All tool outputs are in JSON format. Extract relevant information from the response structure and present it clearly to the user.
-
-5. **Error handling**: If a tool call fails or returns an error status code, explain what went wrong and suggest next steps.
-
-## Tool Description
-
-<tool>
-{TOOL_DESCRIPTIONS}
-</tool>
-
-
-Always prioritize the user's intent and provide helpful, accurate assistance.
+You are a helpful assistant.
 """
 user_prompt = """
 Given a user question you have to answer the user with your best knowledge.
