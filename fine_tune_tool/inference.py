@@ -15,7 +15,7 @@ FastLanguageModel.for_inference(model)
 
 messages = [
     {"role": "system", "content": "You are a very helpful assistant."},
-    {"role": "user", "content": "Hey!"}
+    {"role": "user", "content": "Hey! can you search the web?"}
 ]
 
 tokenizer = get_chat_template(
