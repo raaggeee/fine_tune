@@ -1,6 +1,6 @@
 from unsloth import FastLanguageModel
 from transformers import TextStreamer
-
+from unsloth.chat_templates import get_chat_template
 
 max_seq_length = 2048
 model_name = "unsloth/gemma-4-E2B"
@@ -18,12 +18,11 @@ messages = [
     {"role": "user", "content": "Hey!"}
 ]
 
-prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-
 tokenizer = get_chat_template(
     tokenizer,
     chat_template="gemma-4"
 )
+prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 
 inputs = tokenizer(text=prompt, return_tensors="pt").to("cuda")
 
